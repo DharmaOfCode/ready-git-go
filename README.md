@@ -8,3 +8,6 @@ Go tool for updating git repos en masse
 ## Updating all repos under a base folder
 
 ```readygitgo.exe -p c:\Users\dharmaofcode\projects\  -v -u"```
+
+## Cloning multiple repos at once
+TODO
