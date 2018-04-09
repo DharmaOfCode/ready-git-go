@@ -111,7 +111,7 @@ func PullAllRepos(s *State){
 
 			if s.Verbose{
 				fmt.Println("Updating repo " + f.Name())
-				fmt.Println("running command: " + "git -C " + "pull" + gitpath )
+				fmt.Println("running command: " + "git -C " + " pull" + gitpath )
 			}
 			out, err := exec.Command("git", "-C", gitpath, "pull").
 				Output()
@@ -131,11 +131,19 @@ func UpdateOrigins(s *State){
 		log.Fatal(err)
 	}
 
-	for _, f := range folders {
-		if f.IsDir(){
-			gitpath := s.Path + f.Name()
+	//for _,f := range folders {
+	//	fmt.Println("Found folder: " + f.Name())
+	//}
 
+	for _, f := range folders {
+		gitpath := s.Path + f.Name()
+		if IsGitRepo(gitpath){
 			origin := s.NewOriginBase + f.Name()
+
+			//if IsGitRepo(gitpath){
+			//	fmt.Println("This is a git repo")
+			//}
+
 			if s.Verbose{
 				fmt.Println("Updating remote origin for " + f.Name())
 				fmt.Println("running command: " + "git -C " + gitpath + " remote set-url orign")
@@ -151,6 +159,13 @@ func UpdateOrigins(s *State){
 	}
 
 	Ruler(s)
+}
+
+func IsGitRepo(path string) bool{
+	if _, err := os.Stat(path + "/.git"); err == nil {
+		return true
+	}
+	return false
 }
 
 func main() {
